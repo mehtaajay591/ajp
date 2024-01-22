@@ -1,0 +1,49 @@
+public class OptimalBinarySearchTree {
+
+    public static void main(String[] args) {
+        double[] keys = {10, 12, 16, 21};
+        double[] frequencies = {4, 2, 6, 3};
+
+        double cost = optimalBSTCost(keys, frequencies);
+        System.out.println("Optimal BST Cost: " + cost);
+    }
+
+    static double optimalBSTCost(double[] keys, double[] frequencies) {
+        int n = keys.length;
+        double[][] dp = new double[n][n];
+
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = frequencies[i];
+        }
+
+        for (int length = 2; length <= n; length++) {
+            for (int i = 0; i <= n - length + 1; i++) {
+                int j = i + length - 1;
+                dp[i][j] = Double.MAX_VALUE;
+
+                double sum = getSum(frequencies, i, j);
+                for (int r = i; r <= j; r++) {
+                    double c = ((r > i) ? dp[i][r - 1] : 0) +
+                               ((r < j) ? dp[r + 1][j] : 0) +
+                               sum;
+
+                    if (c < dp[i][j]) {
+                        dp[i][j] = c;
+                    }
+                }
+            }
+        }
+
+        return dp[0][n - 1];
+    }
+
+    static double getSum(double[] frequencies, int i, int j) {
+        double sum = 0;
+        for (int k = i; k <= j; k++) {
+            sum += frequencies[k];
+        }
+        return sum;
+    }
+}
+
+optimal binary search tree algorithm o
