@@ -1,0 +1,67 @@
+public class SelectionSort {
+
+    public static void main(String[] args) {
+        int[] numbers = {55, 25, 15, 40, 60, 35, 17, 65, 75, 10};
+
+        // Perform Selection Sort
+        selectionSort(numbers);
+
+        // Output the sorted array
+        System.out.println("Sorted Array:");
+        printArray(numbers);
+
+        // Output the performance metrics
+        System.out.println("Number of swap operations: " + swapCount);
+        System.out.println("Number of comparison operations: " + comparisonCount);
+        System.out.println("Number of outer loop iterations: " + outerLoopIterations);
+        System.out.println("Number of inner loop iterations: " + innerLoopIterations);
+
+        // Comparison with Bubble Sort
+        System.out.println("\nComparison with Bubble Sort:");
+        System.out.println("Both Bubble Sort and Selection Sort have O(n^2) time complexity in the worst case.");
+        System.out.println("However, in terms of best case, Selection Sort performs better than Bubble Sort.");
+        System.out.println("Selection Sort always has O(n^2) time complexity regardless of the input.");
+    }
+
+    static int swapCount = 0;
+    static int comparisonCount = 0;
+    static int outerLoopIterations = 0;
+    static int innerLoopIterations = 0;
+
+    // Selection Sort algorithm
+    static void selectionSort(int[] arr) {
+        int n = arr.length;
+
+        for (int i = 0; i < n - 1; i++) {
+            outerLoopIterations++; // Count the outer loop iteration
+
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                innerLoopIterations++; // Count the inner loop iteration
+                comparisonCount++; // Count the comparison operation
+
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+
+            // Swap the found minimum element with the element at index i
+            swapCount++; // Count the swap operation
+            int temp = arr[minIndex];
+            arr[minIndex] = arr[i];
+            arr[i] = temp;
+        }
+    }
+
+    // Utility method to print an array
+    static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}
+
+Implement Selection Sort algorithm on a similar set of data as in Q5 and
+(i)perform similar operations on the above example (ii) make a comparison
+between the two algorithms in terms of best case and worst case complexities
