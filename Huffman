@@ -1,0 +1,111 @@
+import java.util.PriorityQueue;
+
+public class HuffmanAlgorithm {
+
+    public static void main(String[] args) {
+        char[] letters = {'A', 'B', 'I', 'M', 'S', 'X', 'Z'};
+        int[] frequencies = {10, 7, 15, 8, 10, 5, 2};
+
+        // Build Huffman tree
+        Node root = buildHuffmanTree(letters, frequencies);
+
+        // Print Huffman codes
+        System.out.println("Huffman Codes:");
+        printHuffmanCodes(root, "");
+
+        // Print complete steps
+        printCompleteSteps(letters, frequencies);
+    }
+
+    // Node class for Huffman tree
+    static class Node implements Comparable<Node> {
+        char letter;
+        int frequency;
+        Node left, right;
+
+        public Node(char letter, int frequency) {
+            this.letter = letter;
+            this.frequency = frequency;
+        }
+
+        @Override
+        public int compareTo(Node other) {
+            return this.frequency - other.frequency;
+        }
+    }
+
+    // Build Huffman tree and return the root
+    static Node buildHuffmanTree(char[] letters, int[] frequencies) {
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+
+        // Create a node for each letter and add it to the priority queue
+        for (int i = 0; i < letters.length; i++) {
+            priorityQueue.add(new Node(letters[i], frequencies[i]));
+        }
+
+        // Build the Huffman tree
+        while (priorityQueue.size() > 1) {
+            Node left = priorityQueue.poll();
+            Node right = priorityQueue.poll();
+
+            Node internalNode = new Node('\0', left.frequency + right.frequency);
+            internalNode.left = left;
+            internalNode.right = right;
+
+            priorityQueue.add(internalNode);
+        }
+
+        return priorityQueue.poll(); // The root of the Huffman tree
+    }
+
+    // Print Huffman codes
+    static void printHuffmanCodes(Node root, String code) {
+        if (root != null) {
+            if (root.letter != '\0') {
+                System.out.println(root.letter + ": " + code);
+            }
+            printHuffmanCodes(root.left, code + "0");
+            printHuffmanCodes(root.right, code + "1");
+        }
+    }
+
+    // Print complete steps during Huffman tree construction
+    static void printCompleteSteps(char[] letters, int[] frequencies) {
+        System.out.println("\nComplete Steps:");
+
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+        for (int i = 0; i < letters.length; i++) {
+            priorityQueue.add(new Node(letters[i], frequencies[i]));
+        }
+
+        int step = 1;
+        while (priorityQueue.size() > 1) {
+            Node left = priorityQueue.poll();
+            Node right = priorityQueue.poll();
+
+            Node internalNode = new Node('\0', left.frequency + right.frequency);
+            internalNode.left = left;
+            internalNode.right = right;
+
+            priorityQueue.add(internalNode);
+
+            System.out.print("Step " + step + ": ");
+            printPriorityQueue(priorityQueue);
+            System.out.println();
+            step++;
+        }
+    }
+
+    // Helper method to print the priority queue during steps
+    static void printPriorityQueue(PriorityQueue<Node> priorityQueue) {
+        for (Node node : priorityQueue) {
+            System.out.print("(" + node.letter + ", " + node.frequency + ") ");
+        }
+    }
+}
+
+Apply Huffman’s algorithm to construct an optimal binary prefix code for
+the letters and its frequencies in the following table.
+Letters A B I M S X Z
+Frequency 10 7 15 8 10 5 2
+Show the complete steps
