@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class ShortestJobFirstScheduling {
+
+    public static void main(String[] args) {
+        List<Job> jobs = new ArrayList<>();
+        jobs.add(new Job(1, 5));
+        jobs.add(new Job(2, 10));
+        jobs.add(new Job(3, 7));
+        jobs.add(new Job(4, 8));
+
+        // Perform Shortest Job First scheduling
+        List<Job> scheduledJobs = shortestJobFirstScheduling(jobs);
+
+        // Display the scheduled jobs and their completion times
+        System.out.println("Scheduled Jobs:");
+        for (Job job : scheduledJobs) {
+            System.out.println("Job " + job.getJobId() + " - Completion Time: " + job.getCompletionTime());
+        }
+
+        // Calculate and display the total time spent in the system
+        int totalTime = calculateTotalTime(scheduledJobs);
+        System.out.println("\nTotal Time Spent in the System: " + totalTime);
+    }
+
+    // Shortest Job First scheduling algorithm
+    static List<Job> shortestJobFirstScheduling(List<Job> jobs) {
+        List<Job> scheduledJobs = new ArrayList<>();
+        int currentTime = 0;
+
+        // Sort jobs based on their service times (shortest first)
+        Collections.sort(jobs, Comparator.comparing(Job::getServiceTime));
+
+        for (Job job : jobs) {
+            // Assign the completion time to each job
+            job.setCompletionTime(currentTime + job.getServiceTime());
+            currentTime = job.getCompletionTime();
+
+            // Add the job to the list of scheduled jobs
+            scheduledJobs.add(job);
+        }
+
+        return scheduledJobs;
+    }
+
+    // Calculate the total time spent in the system
+    static int calculateTotalTime(List<Job> jobs) {
+        int totalTime = 0;
+        for (Job job : jobs) {
+            totalTime += job.getCompletionTime();
+        }
+        return totalTime;
+    }
+
+    static class Job {
+        private int jobId;
+        private int serviceTime;
+        private int completionTime;
+
+        public Job(int jobId, int serviceTime) {
+            this.jobId = jobId;
+            this.serviceTime = serviceTime;
+        }
+
+        public int getJobId() {
+            return jobId;
+        }
+
+        public int getServiceTime() {
+            return serviceTime;
+        }
+
+        public int getCompletionTime() {
+            return completionTime;
+        }
+
+        public void setCompletionTime(int completionTime) {
+            this.completionTime = completionTime;
+        }
+    }
+}
+
+Implement the task scheduling algorithm on your system to minimize the
+total amount of time spent in the system for the following problem:
+4
+Lab Manual Job Service Time
+1 5
+2 10
+3 7
+4 8
