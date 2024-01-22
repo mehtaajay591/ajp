@@ -1,0 +1,98 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class JobSchedulingBruteForce {
+
+    public static void main(String[] args) {
+        int[] serviceTimes = {5, 8, 12};
+
+        // Generate all possible job schedules
+        List<List<Integer>> allSchedules = generateAllJobSchedules(serviceTimes);
+
+        // Find the optimal schedule
+        List<Integer> optimalSchedule = findOptimalSchedule(allSchedules, serviceTimes);
+
+        // Calculate and display the total time for each schedule
+        System.out.println("All possible job schedules and their total times:");
+        for (List<Integer> schedule : allSchedules) {
+            int totalTime = calculateTotalTime(schedule, serviceTimes);
+            System.out.println("Schedule: " + schedule + ", Total Time: " + totalTime);
+        }
+
+        // Display the optimal schedule
+        System.out.println("\nOptimal Schedule: " + optimalSchedule);
+        System.out.println("Optimal Total Time: " + calculateTotalTime(optimalSchedule, serviceTimes));
+
+        // Calculate the total number of job schedules
+        int totalJobSchedules = calculateTotalJobSchedules(serviceTimes.length);
+        System.out.println("\nTotal number of job schedules for " + serviceTimes.length + " jobs: " + totalJobSchedules);
+    }
+
+    // Generate all possible job schedules using permutations
+    static List<List<Integer>> generateAllJobSchedules(int[] serviceTimes) {
+        List<Integer> jobs = new ArrayList<>();
+        for (int i = 0; i < serviceTimes.length; i++) {
+            jobs.add(i + 1); // Jobs are represented by numbers (J1, J2, J3)
+        }
+
+        List<List<Integer>> allSchedules = new ArrayList<>();
+        generatePermutations(allSchedules, jobs, 0);
+
+        return allSchedules;
+    }
+
+    // Helper method to generate permutations
+    static void generatePermutations(List<List<Integer>> result, List<Integer> jobs, int index) {
+        if (index == jobs.size() - 1) {
+            result.add(new ArrayList<>(jobs));
+            return;
+        }
+
+        for (int i = index; i < jobs.size(); i++) {
+            Collections.swap(jobs, i, index);
+            generatePermutations(result, jobs, index + 1);
+            Collections.swap(jobs, i, index);
+        }
+    }
+
+    // Find the optimal schedule with the minimum total time
+    static List<Integer> findOptimalSchedule(List<List<Integer>> allSchedules, int[] serviceTimes) {
+        int minTotalTime = Integer.MAX_VALUE;
+        List<Integer> optimalSchedule = new ArrayList<>();
+
+        for (List<Integer> schedule : allSchedules) {
+            int totalTime = calculateTotalTime(schedule, serviceTimes);
+            if (totalTime < minTotalTime) {
+                minTotalTime = totalTime;
+                optimalSchedule = new ArrayList<>(schedule);
+            }
+        }
+
+        return optimalSchedule;
+    }
+
+    // Calculate the total time for a given schedule
+    static int calculateTotalTime(List<Integer> schedule, int[] serviceTimes) {
+        int totalTime = 0;
+        for (int i = 0; i < schedule.size(); i++) {
+            totalTime += serviceTimes[schedule.get(i) - 1];
+        }
+        return totalTime;
+    }
+
+    // Calculate the total number of job schedules for N jobs
+    static int calculateTotalJobSchedules(int numJobs) {
+        int totalSchedules = 1;
+        for (int i = 1; i <= numJobs; i++) {
+            totalSchedules *= i;
+        }
+        return totalSchedules;
+    }
+}
+
+Apply a brute force approach to schedule three jobs J1, J2 and J3 with
+service times as 5,8,12 respectively. The actual service time units are not
+relevant to the problems. Make all possible job schedules , calculate the total
+times spent in jobs by the system. Find the optimal schedule (total time). If
+there are N jobs , what would be the total number of job schedules?
