@@ -1,0 +1,84 @@
+import java.util.Arrays;
+
+public class DijkstraShortestPath {
+
+    public static void main(String[] args) {
+        // Given graph as an adjacency matrix
+        int[][] graph = {
+                {0, 2, 4, 1, 0},
+                {2, 0, 0, 3, 0},
+                {4, 0, 0, 2, 5},
+                {1, 3, 2, 0, 7},
+                {0, 0, 5, 7, 0}
+        };
+
+        // Q1: Find the shortest path from A to the rest of vertices
+        char sourceA = 'A';
+        int sourceIndexA = sourceA - 'A';
+        int[] distancesFromA = dijkstra(graph, sourceIndexA);
+        printShortestPaths(distancesFromA, sourceA);
+
+        // Q2: Find the shortest path from B to the rest of nodes
+        char sourceB = 'B';
+        int sourceIndexB = sourceB - 'A';
+        int[] distancesFromB = dijkstra(graph, sourceIndexB);
+        printShortestPaths(distancesFromB, sourceB);
+    }
+
+    // Dijkstra's algorithm
+    static int[] dijkstra(int[][] graph, int source) {
+        int vertices = graph.length;
+        int[] distances = new int[vertices];
+        boolean[] visited = new boolean[vertices];
+
+        // Initialize distances
+        Arrays.fill(distances, Integer.MAX_VALUE);
+        distances[source] = 0;
+
+        // Dijkstra's algorithm
+        for (int count = 0; count < vertices - 1; count++) {
+            int u = minDistance(distances, visited);
+            visited[u] = true;
+
+            for (int v = 0; v < vertices; v++) {
+                if (!visited[v] && graph[u][v] != 0 && distances[u] != Integer.MAX_VALUE
+                        && distances[u] + graph[u][v] < distances[v]) {
+                    distances[v] = distances[u] + graph[u][v];
+                }
+            }
+        }
+
+        return distances;
+    }
+
+    // Helper method to find the vertex with the minimum distance value
+    static int minDistance(int[] distances, boolean[] visited) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = -1;
+
+        for (int v = 0; v < distances.length; v++) {
+            if (!visited[v] && distances[v] <= min) {
+                min = distances[v];
+                minIndex = v;
+            }
+        }
+
+        return minIndex;
+    }
+
+    // Helper method to print the shortest paths
+    static void printShortestPaths(int[] distances, char source) {
+        System.out.println("Shortest paths from source " + source + ":");
+        for (int i = 0; i < distances.length; i++) {
+            char destination = (char) ('A' + i);
+            System.out.println("To node " + destination + ": " + distances[i]);
+        }
+        System.out.println();
+    }
+}
+
+Implement Dijkstra’s algorithm to find the single source shortest path
+algorithm from different sources to the rest of nodes in the following graph and
+show allthe intermediate processes:
+Q1 Find the shortest path from A to the rest of vertices
+Q2 Find the shortest path from B to the rest of nodes
