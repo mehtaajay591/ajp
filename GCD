@@ -1,0 +1,32 @@
+public class EuclidsAlgorithm {
+
+    public static void main(String[] args) {
+        int num1 = 15265;
+        int num2 = 15;
+
+        // Find GCD using Euclid's algorithm
+        int gcd = findGCD(num1, num2);
+
+        // Output the GCD
+        System.out.println("GCD of " + num1 + " and " + num2 + " is: " + gcd);
+
+        // Output the number of mod and assignment operations
+        System.out.println("Number of mod operations: " + modCount);
+        System.out.println("Number of assignment operations: " + assignCount);
+    }
+
+    static int modCount = 0;
+    static int assignCount = 0;
+
+    // Euclid's algorithm to find GCD
+    static int findGCD(int a, int b) {
+        while (b != 0) {
+            modCount++; // Count the mod operation
+            int temp = b;
+            b = a % b;
+            a = temp;
+            assignCount += 2; // Count the two assignment operations
+        }
+        return a;
+    }
+}
