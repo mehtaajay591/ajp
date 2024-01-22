@@ -1,0 +1,86 @@
+public class MergeSortExample {
+
+    public static void main(String[] args) {
+        int[] arr = {200, 150, 50, 100, 75, 25, 10, 5};
+
+        System.out.println("Original array:");
+        printArray(arr);
+
+        mergeSort(arr, 0, arr.length - 1);
+
+        System.out.println("\nSorted array:");
+        printArray(arr);
+    }
+
+    // Merge Sort algorithm
+    static void mergeSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int mid = (low + high) / 2;
+
+            // Recursive calls to sort the two halves
+            mergeSort(arr, low, mid);
+            mergeSort(arr, mid + 1, high);
+
+            // Merge the sorted halves
+            merge(arr, low, mid, high);
+        }
+    }
+
+    // Merge step of Merge Sort
+    static void merge(int[] arr, int low, int mid, int high) {
+        int n1 = mid - low + 1;
+        int n2 = high - mid;
+
+        // Create temporary arrays
+        int[] left = new int[n1];
+        int[] right = new int[n2];
+
+        // Copy data to temporary arrays
+        for (int i = 0; i < n1; i++) {
+            left[i] = arr[low + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            right[j] = arr[mid + 1 + j];
+        }
+
+        // Merge the two sorted arrays
+        int i = 0, j = 0, k = low;
+        while (i < n1 && j < n2) {
+            if (left[i] <= right[j]) {
+                arr[k] = left[i];
+                i++;
+            } else {
+                arr[k] = right[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Copy remaining elements of left[] if any
+        while (i < n1) {
+            arr[k] = left[i];
+            i++;
+            k++;
+        }
+
+        // Copy remaining elements of right[] if any
+        while (j < n2) {
+            arr[k] = right[j];
+            j++;
+            k++;
+        }
+    }
+
+    // Utility method to print an array
+    static void printArray(int[] arr) {
+        for (int value : arr) {
+            System.out.print(value + " ");
+        }
+        System.out.println();
+    }
+}
+
+Implement Merge Sort algorithm to sort the following list show the
+process step by step.
+200 150 50 100 75 25 10 5
+Draw a tree of recursive calls in this problem.
