@@ -1,0 +1,101 @@
+public class BinaryExponentiation {
+
+    public static void main(String[] args) {
+        // Problem (i): 4^512
+        int base1 = 4;
+        int exponent1 = 512;
+
+        // Left-to-right binary exponentiation
+        long result1LtoR = leftToRightBinaryExponentiation(base1, exponent1);
+        System.out.println("Left-to-right result for 4^512: " + result1LtoR);
+        System.out.println("Left-to-right loop iterations: " + leftToRightLoopIterations);
+        System.out.println("Left-to-right multiplication operations: " + leftToRightMultiplicationCount);
+        System.out.println("Left-to-right addition operations: " + leftToRightAdditionCount);
+        System.out.println();
+
+        // Right-to-left binary exponentiation
+        long result1RtoL = rightToLeftBinaryExponentiation(base1, exponent1);
+        System.out.println("Right-to-left result for 4^512: " + result1RtoL);
+        System.out.println("Right-to-left loop iterations: " + rightToLeftLoopIterations);
+        System.out.println("Right-to-left multiplication operations: " + rightToLeftMultiplicationCount);
+        System.out.println("Right-to-left addition operations: " + rightToLeftAdditionCount);
+        System.out.println();
+
+        // Problem (ii): 3^31
+        int base2 = 3;
+        int exponent2 = 31;
+
+        // Left-to-right binary exponentiation
+        long result2LtoR = leftToRightBinaryExponentiation(base2, exponent2);
+        System.out.println("Left-to-right result for 3^31: " + result2LtoR);
+        System.out.println("Left-to-right loop iterations: " + leftToRightLoopIterations);
+        System.out.println("Left-to-right multiplication operations: " + leftToRightMultiplicationCount);
+        System.out.println("Left-to-right addition operations: " + leftToRightAdditionCount);
+        System.out.println();
+
+        // Right-to-left binary exponentiation
+        long result2RtoL = rightToLeftBinaryExponentiation(base2, exponent2);
+        System.out.println("Right-to-left result for 3^31: " + result2RtoL);
+        System.out.println("Right-to-left loop iterations: " + rightToLeftLoopIterations);
+        System.out.println("Right-to-left multiplication operations: " + rightToLeftMultiplicationCount);
+        System.out.println("Right-to-left addition operations: " + rightToLeftAdditionCount);
+    }
+
+    static long leftToRightLoopIterations = 0;
+    static long leftToRightMultiplicationCount = 0;
+    static long leftToRightAdditionCount = 0;
+
+    // Left-to-right binary exponentiation
+    static long leftToRightBinaryExponentiation(int base, int exponent) {
+        long result = 1;
+        int binaryExponent = exponent;
+        int binaryBase = base;
+
+        while (binaryExponent > 0) {
+            leftToRightLoopIterations++; // Count the loop iteration
+            if ((binaryExponent & 1) == 1) {
+                leftToRightMultiplicationCount++; // Count the multiplication operation
+                result *= binaryBase;
+            }
+            binaryBase *= binaryBase;
+            leftToRightMultiplicationCount++; // Count the multiplication operation
+            binaryExponent >>= 1;
+        }
+
+        return result;
+    }
+
+    static long rightToLeftLoopIterations = 0;
+    static long rightToLeftMultiplicationCount = 0;
+    static long rightToLeftAdditionCount = 0;
+
+    // Right-to-left binary exponentiation
+    static long rightToLeftBinaryExponentiation(int base, int exponent) {
+        long result = 1;
+        int binaryExponent = exponent;
+        int binaryBase = base;
+
+        while (binaryExponent > 0) {
+            rightToLeftLoopIterations++; // Count the loop iteration
+            if ((binaryExponent & 1) == 1) {
+                rightToLeftMultiplicationCount++; // Count the multiplication operation
+                result *= binaryBase;
+            }
+            binaryBase *= binaryBase;
+            rightToLeftMultiplicationCount++; // Count the multiplication operation
+            binaryExponent >>= 1;
+        }
+
+        return result;
+    }
+}
+
+Implement left to right and right to left binary exponentiation methods for
+the following problems:
+(i) 4
+512 (ii) 3
+31
+Calculate the followings for problems (i) and (ii)
+ How many times the loops will be executed?
+ How many times the multiplication and additions operations will be
+executed?
