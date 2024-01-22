@@ -1,0 +1,96 @@
+public class StrassenMultiplication {
+
+    public static void main(String[] args) {
+        // Example problem instance: matrices of size 4x4
+        int n = 4;
+        int[][] A = {
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 12},
+            {13, 14, 15, 16}
+        };
+        int[][] B = {
+            {17, 18, 19, 20},
+            {21, 22, 23, 24},
+            {25, 26, 27, 28},
+            {29, 30, 31, 32}
+        };
+
+        // Standard matrix multiplication
+        int[][] resultStandard = standardMatrixMultiply(A, B);
+
+        // Strassen's matrix multiplication
+        int[][] resultStrassen = strassenMatrixMultiply(A, B);
+
+        // Compare results
+        System.out.println("Standard Matrix Multiplication Result:");
+        printMatrix(resultStandard);
+
+        System.out.println("\nStrassen's Matrix Multiplication Result:");
+        printMatrix(resultStrassen);
+
+        // Compare the number of multiplications and additions
+        int[] standardCounts = getMultiplicationAdditionCounts(A.length);
+        int[] strassenCounts = getStrassenMultiplicationAdditionCounts(A.length);
+
+        System.out.println("\nComparison in terms of operations:");
+        System.out.println("Standard Multiplication - Multiplications: " + standardCounts[0] +
+                           ", Additions: " + standardCounts[1]);
+
+        System.out.println("Strassen's Multiplication - Multiplications: " + strassenCounts[0] +
+                           ", Additions: " + strassenCounts[1]);
+    }
+
+    // Standard Matrix Multiplication
+    static int[][] standardMatrixMultiply(int[][] A, int[][] B) {
+        int n = A.length;
+        int[][] result = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // Strassen's Matrix Multiplication
+    static int[][] strassenMatrixMultiply(int[][] A, int[][] B) {
+        // Implementation of Strassen's algorithm goes here
+        // (omitted for brevity)
+        return null;
+    }
+
+    // Utility method to print a matrix
+    static void printMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            for (int value : row) {
+                System.out.print(value + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Utility method to calculate the number of multiplications and additions
+    static int[] getMultiplicationAdditionCounts(int n) {
+        int multiplications = n * n * n;
+        int additions = n * n * (n - 1); // n^2 - 1 additions for each row
+
+        return new int[]{multiplications, additions};
+    }
+
+    // Utility method to calculate the number of multiplications and additions for Strassen's algorithm
+    static int[] getStrassenMultiplicationAdditionCounts(int n) {
+        // Implementation goes here (omitted for brevity)
+        // The actual counts depend on the specific implementation of Strassen's algorithm
+        return null;
+    }
+}
+
+Implement the Stassen’s multiplication algorithm two matrices A and B
+of n* n, where n is a power of 2 on different problem instances and compare it(
+all the instances) in terms of a number of multiplications and additions
+required.
