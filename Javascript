@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Satisfaction Survey</title>
+    <script>
+        function validateForm() {
+            var name = document.forms["surveyForm"]["name"].value;
+            var course = document.forms["surveyForm"]["course"].value;
+            var satisfaction = document.forms["surveyForm"]["satisfaction"].value;
+
+            if (name === "" || course === "" || satisfaction === "") {
+                alert("All fields must be filled out");
+                return false;
+            }
+        }
+
+        function submitForm() {
+            if (validateForm()) {
+                // Assuming there is a function to send data to the server or database
+                // e.g., sendDataToDatabase(name, course, satisfaction);
+                alert("Data submitted successfully!");
+                // You may also want to redirect the user or perform other actions after submission
+            }
+        }
+
+        function resetForm() {
+            document.getElementById("surveyForm").reset();
+        }
+    </script>
+</head>
+<body>
+    <h2>Student Satisfaction Survey</h2>
+    <form name="surveyForm" onsubmit="return validateForm()" method="post" action="javascript:submitForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="course">Course:</label>
+        <input type="text" id="course" name="course" required><br>
+
+        <label for="satisfaction">Satisfaction Level:</label>
+        <select id="satisfaction" name="satisfaction" required>
+            <option value="" disabled selected>Select satisfaction level</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select><br>
+
+        <input type="submit" value="Submit">
+        <input type="button" value="Reset" onclick="resetForm()">
+    </form>
+</body>
+</html>
+
+Design a form for student satisfaction survey for various course offered by some department of some University.
+The form should have relevant fields (make suitable assumptions). The form should have submit and reset button. Now,
+perform the following:
+a) Use java script to validate all the fields in the form.
+b) Submit button should enter the data of fields in the database.
+c) Error message should be shown if text field is left blank.
+d) Reset button shold reset all the fields to blank.
+
