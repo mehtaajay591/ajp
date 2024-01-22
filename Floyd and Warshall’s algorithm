@@ -1,0 +1,69 @@
+import java.util.Arrays;
+
+public class FloydWarshallAlgorithm {
+
+    public static void main(String[] args) {
+        // Given graph as an adjacency matrix (0 indicates no edge)
+        int[][] graph = {
+                {0, 2, 4, 1, 0},
+                {2, 0, 0, 3, 0},
+                {4, 0, 0, 2, 5},
+                {1, 3, 2, 0, 7},
+                {0, 0, 5, 7, 0}
+        };
+
+        // Apply Floyd-Warshall algorithm
+        int[][] shortestDistances = floydWarshall(graph);
+
+        // Show the matrix D^5
+        System.out.println("Matrix D^(5) after 5 iterations:");
+        printMatrix(shortestDistances);
+
+        // Find the shortest path between two nodes (e.g., A to E)
+        char source = 'A';
+        char destination = 'E';
+        int sourceIndex = source - 'A';
+        int destinationIndex = destination - 'A';
+        int shortestPathDistance = shortestDistances[sourceIndex][destinationIndex];
+
+        System.out.println("\nShortest path from " + source + " to " + destination + ": " +
+                (shortestPathDistance == Integer.MAX_VALUE ? "No path" : shortestPathDistance));
+    }
+
+    // Floyd-Warshall algorithm
+    static int[][] floydWarshall(int[][] graph) {
+        int vertices = graph.length;
+        int[][] distances = Arrays.copyOf(graph, vertices);
+
+        for (int k = 0; k < vertices; k++) {
+            for (int i = 0; i < vertices; i++) {
+                for (int j = 0; j < vertices; j++) {
+                    if (distances[i][k] != 0 && distances[k][j] != 0) {
+                        int throughK = distances[i][k] + distances[k][j];
+                        if (distances[i][j] == 0 || throughK < distances[i][j]) {
+                            distances[i][j] = throughK;
+                        }
+                    }
+                }
+            }
+        }
+
+        return distances;
+    }
+
+    // Helper method to print a matrix
+    static void printMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            for (int value : row) {
+                System.out.print((value == Integer.MAX_VALUE ? "∞" : value) + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+2. Apply the Floyd and Warshall’s algorithm to compute the shortest path to
+the following graph. Compute 𝐷
+5 matrix of the graph
+Apply the Floyd and Warshall’s algorithm for the following graph. Show
+the matrix 𝐷^
+5 of the graph and find out the shortest path .
