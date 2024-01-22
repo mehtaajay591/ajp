@@ -1,0 +1,61 @@
+public class BubbleSort {
+
+    public static void main(String[] args) {
+        int[] numbers = {55, 25, 15, 40, 60, 35, 17, 65, 75, 10};
+
+        // Perform Bubble Sort
+        bubbleSort(numbers);
+
+        // Output the sorted array
+        System.out.println("Sorted Array:");
+        printArray(numbers);
+
+        // Output the performance metrics
+        System.out.println("Number of exchange operations: " + exchangeCount);
+        System.out.println("Number of comparison operations: " + comparisonCount);
+        System.out.println("Number of outer loop iterations: " + outerLoopIterations);
+        System.out.println("Number of inner loop iterations: " + innerLoopIterations);
+    }
+
+    static int exchangeCount = 0;
+    static int comparisonCount = 0;
+    static int outerLoopIterations = 0;
+    static int innerLoopIterations = 0;
+
+    // Bubble Sort algorithm
+    static void bubbleSort(int[] arr) {
+        int n = arr.length;
+
+        for (int i = 0; i < n - 1; i++) {
+            outerLoopIterations++; // Count the outer loop iteration
+
+            for (int j = 0; j < n - i - 1; j++) {
+                innerLoopIterations++; // Count the inner loop iteration
+                comparisonCount++; // Count the comparison operation
+
+                if (arr[j] > arr[j + 1]) {
+                    // Swap elements if they are in the wrong order
+                    exchangeCount++; // Count the exchange operation
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Utility method to print an array
+    static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}
+
+
+Implement Bubble Sort algorithm for the following list of numbers:
+55 25 15 40 60 35 17 65 75 10
+Calculate (i) a number of exchange operations (ii) a number of times
+comparison operations (iii) a number of times the inner and outer loops will
+iterate?
