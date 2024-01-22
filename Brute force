@@ -1,0 +1,38 @@
+public class PolynomialComparison {
+
+    public static void main(String[] args) {
+        int[] coefficients = {6, 5, 4, -3, 2, 8, -7}; // Coefficients of the polynomial
+        int x = 3; // Value of x
+
+        // Evaluate the polynomial using brute force method
+        int resultBruteForce = evaluatePolynomialBruteForce(coefficients, x);
+
+        // Output the result using brute force method
+        System.out.println("Result using brute force method: " + resultBruteForce);
+
+        // Output the number of multiplication operations for both methods
+        System.out.println("Number of multiplications (Horner's method): " + HornersRule.multiplicationCount);
+        System.out.println("Number of multiplications (Brute force method): " + bruteForceMultiplicationCount);
+    }
+
+    static int bruteForceMultiplicationCount = 0;
+
+    // Brute force method for polynomial evaluation
+    static int evaluatePolynomialBruteForce(int[] coefficients, int x) {
+        int result = 0;
+        int powerOfX = 1;
+
+        for (int i = 0; i < coefficients.length; i++) {
+            int term = coefficients[i] * powerOfX;
+            result += term;
+            powerOfX *= x;
+            bruteForceMultiplicationCount++; // Count the multiplication operation
+        }
+
+        return result;
+    }
+}
+ P(x) = 6𝑥⁶ + 5𝑥⁵ + 4𝑥⁴ - 3𝑥³ + 2𝑥² + 8𝑥 - 7 at x = 3 
+Apply a brute force method to implement the above polynomial
+expression and compare it with Horner’s method in terms of number of
+multiplication operations
