@@ -39,3 +39,27 @@ public class HornersRule {
 
 implement Horner's rule for evaluating the given polynomial P(x) = 6𝑥⁶ + 5𝑥⁵ + 4𝑥⁴ - 3𝑥³ + 2𝑥² + 8𝑥 - 7 at x = 3 and 
 calculate the number of multiplication and addition operations, as well as the number of loop iterations:
+
+2. Normal Algo 
+public class HornerRulePolynomialEvaluation {
+
+    public static void main(String[] args) {
+        int[] coefficients = {6, 5, 4, -3, 2, 8, -7};
+        int x = 3;
+
+        long result = evaluatePolynomial(coefficients, x);
+
+        System.out.println("Result of P(" + x + ") using Horner's rule: " + result);
+    }
+
+    // Horner's rule for polynomial evaluation
+    static long evaluatePolynomial(int[] coefficients, int x) {
+        long result = coefficients[0]; // Initialize result with the constant term
+
+        for (int i = 1; i < coefficients.length; i++) {
+            result = result * x + coefficients[i];
+        }
+
+        return result;
+    }
+}
