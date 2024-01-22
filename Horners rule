@@ -1,0 +1,41 @@
+public class HornersRule {
+
+    public static void main(String[] args) {
+        int[] coefficients = {6, 5, 4, -3, 2, 8, -7}; // Coefficients of the polynomial
+        int x = 3; // Value of x
+
+        // Evaluate the polynomial using Horner's rule
+        int result = evaluatePolynomial(coefficients, x);
+
+        // Output the result
+        System.out.println("Result of P(" + x + ") is: " + result);
+
+        // Output the number of multiplication and addition operations
+        System.out.println("Number of multiplications: " + multiplicationCount);
+        System.out.println("Number of additions: " + additionCount);
+
+        // Output the number of loop iterations
+        System.out.println("Number of loop iterations: " + loopIterations);
+    }
+
+    static int multiplicationCount = 0;
+    static int additionCount = 0;
+    static int loopIterations = 0;
+
+    // Horner's rule for polynomial evaluation
+    static int evaluatePolynomial(int[] coefficients, int x) {
+        int result = 0;
+
+        for (int i = 0; i < coefficients.length; i++) {
+            multiplicationCount++; // Count the multiplication operation
+            result = result * x + coefficients[i];
+            additionCount++; // Count the addition operation
+            loopIterations++; // Count the loop iteration
+        }
+
+        return result;
+    }
+}
+
+implement Horner's rule for evaluating the given polynomial P(x) = 6𝑥⁶ + 5𝑥⁵ + 4𝑥⁴ - 3𝑥³ + 2𝑥² + 8𝑥 - 7 at x = 3 and 
+calculate the number of multiplication and addition operations, as well as the number of loop iterations:
