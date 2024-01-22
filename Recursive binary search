@@ -1,0 +1,45 @@
+public class RecursiveBinarySearch {
+
+    public static void main(String[] args) {
+        int[] array = {10, 35, 40, 45, 50, 55, 60, 65, 70, 100};
+        int target = 100;
+
+        int index = binarySearch(array, target, 0, array.length - 1);
+
+        if (index != -1) {
+            System.out.println("Number " + target + " found at index: " + index);
+        } else {
+            System.out.println("Number " + target + " not found in the array.");
+        }
+    }
+
+    // Recursive binary search algorithm
+    static int binarySearch(int[] array, int target, int low, int high) {
+        if (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            // Base case: If the target is found
+            if (array[mid] == target) {
+                return mid;
+            }
+
+            // If the target is smaller than the middle element, search in the left subarray
+            if (target < array[mid]) {
+                System.out.println("Searching in the left subarray: " + array[low] + " to " + array[mid - 1]);
+                return binarySearch(array, target, low, mid - 1);
+            }
+
+            // If the target is larger than the middle element, search in the right subarray
+            System.out.println("Searching in the right subarray: " + array[mid + 1] + " to " + array[high]);
+            return binarySearch(array, target, mid + 1, high);
+        }
+
+        // Base case: If the target is not found
+        return -1;
+    }
+}
+Implement a recursive binary search algorithm on your system to search
+for a number 100 in the following array of integers. Show the processes step
+by step:
+10 35 40 45 50 55 60 65 70 100
+Draw recursive calls to be made in this problem
