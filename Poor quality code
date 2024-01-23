@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+int square(int x)
+{
+    int result;
+    result = x * x;
+    return result;
+}
+
+int main()
+{
+    int num;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+
+    int result = square(num);
+
+    printf("The square of %d is %d\n", num, result);
+
+    return 0;
+}
+o/p: Enter a number: 5
+The square of 5 is 25
+
+
+Lack of Meaningful Variable Names:
+
+The variable names like x and result are not descriptive. Meaningful variable names enhance code readability.
+Inefficient Code Structure:
+
+The square function is not necessary for such a simple operation. It adds unnecessary complexity.
+Minimal Comments:
+
+There are no comments to explain the purpose or functionality of the code. Comments are essential for 
+understanding the code, especially for more complex programs.
+No Error Handling:
+The program does not handle invalid inputs. If the user enters a non-integer, the program may behave unexpectedly.
+Limited User Interaction:
+
+The program does not provide enough user interaction, such as informing the user about what the program expects or handling various cases.
+A better-quality version of this program would have more descriptive variable names, use inline code for simplicity, include comments for 
+clarity, handle potential errors, and provide a more user-friendly interface.
