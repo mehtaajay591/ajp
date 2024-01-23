@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+// Function to calculate the square of a number
+int calculateSquare(int number) {
+    return number * number;
+}
+
+int main() {
+    // Declare variables
+    int userInput, squareResult;
+
+    // Prompt the user for input
+    printf("Enter a number: ");
+
+    // Read user input
+    if (scanf("%d", &userInput) != 1) {
+        // Handle invalid input
+        printf("Invalid input. Please enter a valid integer.\n");
+        return 1;
+    }
+
+    // Calculate the square
+    squareResult = calculateSquare(userInput);
+
+    // Display the result
+    printf("The square of %d is %d\n", userInput, squareResult);
+
+    return 0; // Return 0 to indicate successful execution
+}
+
+o/p: Enter a number: 8
+The square of 8 is 64
+
+Enter a number: abc
+Invalid input. Please enter a valid integer.
+
+
+
+Justifications for the improvements:
+
+Meaningful Function and Variable Names:
+
+Renamed the function to calculateSquare to better convey its purpose.
+Used userInput and squareResult as more descriptive variable names.
+Input Validation:
+
+Checked for valid input using scanf return value to avoid undefined behavior with invalid input.
+Structured Code:
+
+Enclosed the core logic within a function (calculateSquare).
+Structured the code with proper indentation for readability.
+Error Handling:
+
+Added error handling for invalid input, displaying a user-friendly message.
+Comments:
+
+Added comments to explain the purpose of functions and critical code sections.
+Consistent Formatting:
+
+Ensured consistent formatting throughout the code.
