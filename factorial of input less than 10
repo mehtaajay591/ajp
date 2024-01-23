@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+// Function to calculate factorial
+int factorial(int n);
+
+int main() {
+    int num;
+
+    // Input
+    printf("Enter an integer less than 10: ");
+    scanf("%d", &num);
+
+    // Check if the input is valid
+    if (num >= 0 && num < 10) {
+        // Calculate and display the factorial
+        printf("Factorial of %d is %d\n", num, factorial(num));
+    } else {
+        printf("Invalid input. Please enter an integer less than 10.\n");
+    }
+
+    return 0;
+}
+
+// Recursive function to calculate factorial
+int factorial(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+o/p: Enter an integer less than 10: 5
+Factorial of 5 is 120
+
+Enter an integer less than 10: 12
+Invalid input. Please enter an integer less than 10.
+
+Test cases: Valid Test Cases:
+Test Case 1: Valid Input
+Input: 5
+Expected Output: Factorial of 5 is 120
+
+Test Case 2: Edge Case (Zero)
+Input: 0
+Expected Output: Factorial of 0 is 1
+
+Invalid Test Cases:
+Test Case 3: Input Greater than 9
+Input: 10
+Expected Output: Invalid input. Please enter an integer less than 10.
+
+Test Case 4: Negative Input
+Input: -3
+Expected Output: Invalid input. Please enter an integer less than 10.
+Test Case 5: Non-Integer Input
+Input: abc
+Expected Output: Invalid input. Please enter an integer less than 10.
+Test Case 6: Large Input
+Input: 15
+Expected Output: Invalid input. Please enter an integer less than 10.
+
