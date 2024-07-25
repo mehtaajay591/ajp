@@ -1,0 +1,55 @@
+pip install pandas numpy sklearn matplotlib
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN
+
+# Generate synthetic dataset
+n_samples = 1500
+n_features = 2
+centers = [(0, 0), (5, 5), (-5, -5)]
+cluster_std = [1.0, 0.5, 1.5]
+
+X, labels_true = make_blobs(n_samples=n_samples, centers=centers, cluster_std=cluster_std, random_state=42)
+
+# Add noise to the dataset
+noise_ratio = 0.05
+n_noise = int(noise_ratio * n_samples)
+noise = np.random.uniform(low=-10, high=10, size=(n_noise, n_features))
+X = np.vstack([X, noise])
+
+# Normalize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply DBSCAN
+dbscan = DBSCAN(eps=0.3, min_samples=10)
+labels = dbscan.fit_predict(X_scaled)
+
+# Identify core samples, clusters, and noise
+core_samples_mask = np.zeros_like(labels, dtype=bool)
+core_samples_mask[dbscan.core_sample_indices_] = True
+unique_labels = set(labels)
+
+# Plot results
+plt.figure(figsize=(12, 8))
+colors = [plt.cm.Spectral(each) for each in np.linspace(0, 1, len(unique_labels))]
+
+for k, col in zip(unique_labels, colors):
+    if k == -1:
+        # Black used for noise.
+        col = [0, 0, 0, 1]
+
+    class_member_mask = (labels == k)
+    xy = X_scaled[class_member_mask & core_samples_mask]
+    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col), markeredgecolor='k', markersize=14)
+
+    xy = X_scaled[class_member_mask & ~core_samples_mask]
+    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col), markeredgecolor='k', markersize=6)
+
+plt.title('DBSCAN clustering on a large dataset with noise')
+plt.xlabel('Feature 1 (scaled)')
+plt.ylabel('Feature 2 (scaled)')
+plt.show()

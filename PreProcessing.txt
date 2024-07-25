@@ -1,0 +1,70 @@
+16. Perform the basic pre-processing operations on data relation such as
+removing an attribute and filter attribute bank data
+
+pip install pandas liac-arff
+
+import pandas as pd
+import arff
+
+# Function to load ARFF dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Load the dataset
+bank_data = load_arff('path/to/Bank.arff')
+# Remove specific attributes (columns)
+attributes_to_remove = ['attribute_name1', 'attribute_name2']
+bank_data_cleaned = bank_data.drop(columns=attributes_to_remove)
+
+print("Data after removing attributes:")
+print(bank_data_cleaned.head())
+# Filter rows where a specific condition is met
+filtered_data = bank_data_cleaned[bank_data_cleaned['some_attribute'] > some_value]
+
+print("Filtered data:")
+print(filtered_data.head())
+
+
+18. Demonstrate the preprocessing mechanism on the following datasets:
+a. student.arff
+b. labor.arff
+c. contactlenses.arff
+
+a. pip install pandas liac-arff
+
+import pandas as pd
+import arff
+
+# Function to load ARFF dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Load the dataset
+student_data = load_arff('path/to/student.arff')
+print("Initial Data:")
+print(student_data.head())
+# Specify attributes to remove
+attributes_to_remove = ['attribute_name1', 'attribute_name2']  # Replace with actual attribute names
+student_data_cleaned = student_data.drop(columns=attributes_to_remove)
+
+print("Data after removing attributes:")
+print(student_data_cleaned.head())
+# Drop rows with any missing values
+student_data_cleaned = student_data_cleaned.dropna()
+
+# Or fill missing values with a specific value (e.g., mode or mean)
+student_data_cleaned = student_data_cleaned.fillna(student_data_cleaned.mode().iloc[0])
+
+print("Data after handling missing values:")
+print(student_data_cleaned.head())
+# Convert categorical columns to dummy variables
+student_data_encoded = pd.get_dummies(student_data_cleaned)
+
+print("Data after encoding categorical variables:")
+print(student_data_encoded.head())

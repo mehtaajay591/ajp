@@ -1,0 +1,42 @@
+14. Implement the Apriori Algorithm to find the association rules in contactless.
+arff dataset.
+
+pip install pandas mlxtend liac-arff
+
+import pandas as pd
+import arff
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Function to load ARFF dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Convert categorical data to a transaction format
+    data = pd.get_dummies(data)
+    return data
+
+# Load dataset
+contactlenses_data = load_arff('path/to/contactlenses.arff')
+
+# Preprocess dataset
+contactlenses_data = preprocess_data(contactlenses_data)
+ # Apply Appri algo.
+
+# Find frequent itemsets using Apriori
+frequent_itemsets = apriori(contactlenses_data, min_support=0.1, use_colnames=True)
+
+# Generate association rules
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7)
+
+# Display the rules
+print("Frequent Itemsets:")
+print(frequent_itemsets)
+
+print("\nAssociation Rules:")
+print(rules)
+

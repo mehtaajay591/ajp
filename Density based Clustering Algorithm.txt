@@ -1,0 +1,46 @@
+3. Implement Density based Clustering Algorithm to demonstrate the
+clustering rule process on dataset employee.arff.
+
+pip install pandas sklearn liac-arff
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN
+import arff
+import matplotlib.pyplot as plt
+
+# Load the ARFF file and convert it to a DataFrame
+def load_arff(file_path):
+    with open(file_path, 'r') as f:
+        dataset = arff.load(f)
+    df = pd.DataFrame(dataset['data'], columns=[attr[0] for attr in dataset['attributes']])
+    return df
+
+# Load employee dataset
+employee_df = load_arff('employee.arff')
+
+# Select the features for clustering (ignoring non-numeric columns)
+employee_features = employee_df[['Age', 'Salary']]
+
+# Normalize the features
+scaler = StandardScaler()
+employee_features_scaled = scaler.fit_transform(employee_features)
+
+# Apply DBSCAN
+dbscan = DBSCAN(eps=0.5, min_samples=2)
+employee_clusters = dbscan.fit_predict(employee_features_scaled)
+
+# Add cluster labels to the DataFrame
+employee_df['Cluster'] = employee_clusters
+
+# Output the clustered data
+print("Employee Clusters:")
+print(employee_df)
+
+# Plot the clusters
+plt.figure(figsize=(10, 7))
+plt.scatter(employee_features_scaled[:, 0], employee_features_scaled[:, 1], c=employee_clusters, cmap='plasma')
+plt.title("DBSCAN Clustering of Employee Data")
+plt.xlabel('Age (scaled)')
+plt.ylabel('Salary (scaled)')
+plt.show()

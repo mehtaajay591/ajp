@@ -1,0 +1,331 @@
+6. Demonstrate the classification rule process on the student.arff, employee.
+arff and labor.arff datasets using the following algorithms:
+a. Logistic Regression
+b. Decision Tree
+c. Naïve Bayes
+d. K-Nearest Neighbour
+e. SVM
+
+a.
+pip install pandas numpy scikit-learn liac-arff
+
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import arff
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Handle missing values
+    data = data.dropna()
+    # Convert categorical data to numerical data
+    data = pd.get_dummies(data)
+    return data
+
+# Function to train and evaluate Logistic Regression model
+def train_and_evaluate(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LogisticRegression(max_iter=1000)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    print(f'Accuracy: {accuracy:.2f}')
+    print(f'Precision: {precision:.2f}')
+    print(f'Recall: {recall:.2f}')
+    print(f'F1 Score: {f1:.2f}')
+    return model
+
+# Load datasets
+student_data = load_arff('path/to/student.arff')
+employee_data = load_arff('path/to/employee.arff')
+labor_data = load_arff('path/to/labor.arff')
+
+# Preprocess datasets
+student_data = preprocess_data(student_data)
+employee_data = preprocess_data(employee_data)
+labor_data = preprocess_data(labor_data)
+
+# Train and evaluate models
+print("Student Data:")
+student_model = train_and_evaluate(student_data, 'target_column_name')
+
+print("\nEmployee Data:")
+employee_model = train_and_evaluate(employee_data, 'target_column_name')
+
+print("\nLabor Data:")
+labor_model = train_and_evaluate(labor_data, 'target_column_name')
+
+b. 
+pip install pandas numpy scikit-learn liac-arff
+import pandas as pd
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier, export_text
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import arff
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Handle missing values
+    data = data.dropna()
+    # Convert categorical data to numerical data
+    data = pd.get_dummies(data)
+    return data
+
+# Function to train and evaluate Decision Tree model
+def train_and_evaluate(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = DecisionTreeClassifier()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    print(f'Accuracy: {accuracy:.2f}')
+    print(f'Precision: {precision:.2f}')
+    print(f'Recall: {recall:.2f}')
+    print(f'F1 Score: {f1:.2f}')
+    return model
+
+# Load datasets
+student_data = load_arff('path/to/student.arff')
+employee_data = load_arff('path/to/employee.arff')
+labor_data = load_arff('path/to/labor.arff')
+
+# Preprocess datasets
+student_data = preprocess_data(student_data)
+employee_data = preprocess_data(employee_data)
+labor_data = preprocess_data(labor_data)
+
+# Train and evaluate models
+print("Student Data:")
+student_model = train_and_evaluate(student_data, 'target_column_name')
+
+print("\nEmployee Data:")
+employee_model = train_and_evaluate(employee_data, 'target_column_name')
+
+print("\nLabor Data:")
+labor_model = train_and_evaluate(labor_data, 'target_column_name')
+
+# Display decision tree rules
+print("\nDecision Tree Rules for Student Data:")
+print(export_text(student_model, feature_names=list(student_data.drop(columns=['target_column_name']).columns)))
+
+print("\nDecision Tree Rules for Employee Data:")
+print(export_text(employee_model, feature_names=list(employee_data.drop(columns=['target_column_name']).columns)))
+
+print("\nDecision Tree Rules for Labor Data:")
+print(export_text(labor_model, feature_names=list(labor_data.drop(columns=['target_column_name']).columns)))
+
+
+c. 
+pip install pandas numpy scikit-learn liac-arff
+import pandas as pd
+import numpy as np
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import arff
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Handle missing values
+    data = data.dropna()
+    # Convert categorical data to numerical data
+    data = pd.get_dummies(data)
+    return data
+
+# Function to train and evaluate Naive Bayes model
+def train_and_evaluate(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = GaussianNB()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    print(f'Accuracy: {accuracy:.2f}')
+    print(f'Precision: {precision:.2f}')
+    print(f'Recall: {recall:.2f}')
+    print(f'F1 Score: {f1:.2f}')
+    return model
+
+# Load datasets
+student_data = load_arff('path/to/student.arff')
+employee_data = load_arff('path/to/employee.arff')
+labor_data = load_arff('path/to/labor.arff')
+
+# Preprocess datasets
+student_data = preprocess_data(student_data)
+employee_data = preprocess_data(employee_data)
+labor_data = preprocess_data(labor_data)
+
+# Train and evaluate models
+print("Student Data:")
+student_model = train_and_evaluate(student_data, 'target_column_name')
+
+print("\nEmployee Data:")
+employee_model = train_and_evaluate(employee_data, 'target_column_name')
+
+print("\nLabor Data:")
+labor_model = train_and_evaluate(labor_data, 'target_column_name')
+
+d. 
+pip install pandas numpy scikit-learn liac-arff
+import pandas as pd
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import arff
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Handle missing values
+    data = data.dropna()
+    # Convert categorical data to numerical data
+    data = pd.get_dummies(data)
+    return data
+
+# Function to train and evaluate KNN model
+def train_and_evaluate(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = KNeighborsClassifier(n_neighbors=5)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    print(f'Accuracy: {accuracy:.2f}')
+    print(f'Precision: {precision:.2f}')
+    print(f'Recall: {recall:.2f}')
+    print(f'F1 Score: {f1:.2f}')
+    return model
+
+# Load datasets
+student_data = load_arff('path/to/student.arff')
+employee_data = load_arff('path/to/employee.arff')
+labor_data = load_arff('path/to/labor.arff')
+
+# Preprocess datasets
+student_data = preprocess_data(student_data)
+employee_data = preprocess_data(employee_data)
+labor_data = preprocess_data(labor_data)
+
+# Train and evaluate models
+print("Student Data:")
+student_model = train_and_evaluate(student_data, 'target_column_name')
+
+print("\nEmployee Data:")
+employee_model = train_and_evaluate(employee_data, 'target_column_name')
+
+print("\nLabor Data:")
+labor_model = train_and_evaluate(labor_data, 'target_column_name')
+
+e.
+pip install pandas numpy scikit-learn liac-arff
+
+import pandas as pd
+import numpy as np
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import arff
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Handle missing values
+    data = data.dropna()
+    # Convert categorical data to numerical data
+    data = pd.get_dummies(data)
+    return data
+
+# Function to train and evaluate SVM model
+def train_and_evaluate(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = SVC()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    print(f'Accuracy: {accuracy:.2f}')
+    print(f'Precision: {precision:.2f}')
+    print(f'Recall: {recall:.2f}')
+    print(f'F1 Score: {f1:.2f}')
+    return model
+
+# Load datasets
+student_data = load_arff('path/to/student.arff')
+employee_data = load_arff('path/to/employee.arff')
+labor_data = load_arff('path/to/labor.arff')
+
+# Preprocess datasets
+student_data = preprocess_data(student_data)
+employee_data = preprocess_data(employee_data)
+labor_data = preprocess_data(labor_data)
+
+# Train and evaluate models
+print("Student Data:")
+student_model = train_and_evaluate(student_data, 'target_column_name')
+
+print("\nEmployee Data:")
+employee_model = train_and_evaluate(employee_data, 'target_column_name')
+
+print("\nLabor Data:")
+labor_model = train_and_evaluate(labor_data, 'target_column_name')
+

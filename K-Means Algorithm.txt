@@ -1,0 +1,142 @@
+4. Implement simple K-Means Algorithm to demonstrate the clustering rule
+on the following datasets:
+a. iris.arff
+b. student.arff
+
+pip install pandas numpy scikit-learn liac-arff matplotlib
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import arff
+
+# Function to load ARFF file and convert it to a DataFrame
+def load_arff(file_path):
+    with open(file_path, 'r') as f:
+        dataset = arff.load(f)
+    df = pd.DataFrame(dataset['data'], columns=[attr[0] for attr in dataset['attributes']])
+    return df
+
+# Load datasets
+iris_df = load_arff('iris.arff')
+student_df = load_arff('student.arff')
+
+# Normalize features (standardization)
+def normalize_features(df, feature_columns):
+    scaler = StandardScaler()
+    features_scaled = scaler.fit_transform(df[feature_columns])
+    return features_scaled
+
+# Plot clustering results
+def plot_clusters(features, labels, title, x_label, y_label):
+    plt.figure(figsize=(10, 7))
+    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap='viridis', marker='o')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.show()
+
+# Iris dataset clustering
+iris_features = iris_df[['sepallength', 'sepalwidth', 'petallength', 'petalwidth']]
+iris_features_scaled = normalize_features(iris_df, ['sepallength', 'sepalwidth', 'petallength', 'petalwidth'])
+kmeans_iris = KMeans(n_clusters=3, random_state=42)
+iris_clusters = kmeans_iris.fit_predict(iris_features_scaled)
+plot_clusters(iris_features_scaled, iris_clusters, 'K-Means Clustering on Iris Dataset', 'Feature 1 (scaled)', 'Feature 2 (scaled)')
+
+# Student dataset clustering
+student_features = student_df[['Age', 'Grade']]
+student_features_scaled = normalize_features(student_df, ['Age', 'Grade'])
+kmeans_student = KMeans(n_clusters=3, random_state=42)
+student_clusters = kmeans_student.fit_predict(student_features_scaled)
+plot_clusters(student_features_scaled, student_clusters, 'K-Means Clustering on Student Dataset', 'Age (scaled)', 'Grade (scaled)')
+
+# Output clustered data
+iris_df['Cluster'] = iris_clusters
+student_df['Cluster'] = student_clusters
+
+print("Iris Dataset Clusters:")
+print(iris_df.head())
+
+print("\nStudent Dataset Clusters:")
+print(student_df.head())
+
+#--------------------------------------------------------
+
+5. Perform the following:
+• Load each dataset into WEKA and run simple k-means clustering
+algorithm with different values of k (number of desired clusters).
+• Study the clusters formed.
+• Observe the sum of squared errors and centroids, and derive insights.
+• Explore other clustering techniques available in WEKA.
+• Explore visualization features of WEKA to visualize the clusters.
+• Derive interesting insights and explain.
+
+Step 1: Load Datasets into WEKA
+Open WEKA: Start WEKA by running the weka.jar file.
+Preprocess:
+Click on "Explorer" in the WEKA GUI Chooser.
+In the "Preprocess" tab, click "Open file..." and select your iris.arff file.
+Repeat the process for the student.arff file.
+Step 2: Run K-Means Clustering with Different Values of k
+Cluster Tab:
+
+Click on the "Cluster" tab.
+Choose the SimpleKMeans algorithm.
+Set the number of clusters (k). Try different values (e.g., 2, 3, 4, 5).
+Click "Start" to run the clustering algorithm.
+Study Clusters Formed:
+
+After running the algorithm, WEKA provides a summary of the clusters.
+Review the "Clustered Instances" section to see the number of instances in each cluster.
+Examine the cluster centroids and the sum of squared errors (SSE).
+Step 3: Observe Sum of Squared Errors and Centroids
+Sum of Squared Errors (SSE):
+
+SSE indicates how tightly the clusters are packed. A lower SSE suggests better-defined clusters.
+Compare SSE for different values of k to determine the optimal number of clusters.
+Centroids:
+
+The centroid values represent the mean of the attributes for the instances in each cluster.
+Analyze the centroid values to understand the characteristics of each cluster.
+Step 4: Explore Other Clustering Techniques in WEKA
+Other Clustering Algorithms:
+In the "Cluster" tab, explore other algorithms like EM (Expectation Maximization), HierarchicalClusterer, and DBSCAN.
+Run these algorithms and compare the results with SimpleKMeans.
+Step 5: Visualize Clusters
+Visualization:
+After clustering, right-click on the result in the "Result list" on the left.
+Select "Visualize cluster assignments" to see a visual representation of the clusters.
+Use the "Visualize" tab to explore different attributes and their distributions within clusters.
+Step 6: Derive Insights and Explain
+Insights from Iris Dataset:
+
+Run SimpleKMeans with k=3 on the iris.arff dataset.
+Observe that the clusters correspond well with the three species of iris (setosa, versicolor, virginica).
+Note the cluster centroids and attribute distributions. Setosa typically forms a distinct cluster due to its unique attribute values.
+Insights from Student Dataset:
+
+Run SimpleKMeans with different k values on the student.arff dataset.
+Identify clusters based on attributes like Age and Grade.
+Analyze how clusters form around different age groups and grades, providing insights into student performance patterns.
+Example Observations
+Sum of Squared Errors (SSE):
+
+SSE typically decreases as k increases. However, after a certain point, the reduction in SSE becomes marginal, indicating an optimal k.
+For iris.arff, an optimal k is often 3, as it aligns with the three species.
+Centroids:
+
+Centroids can help identify the typical characteristics of each cluster.
+For student.arff, clusters might show different average ages and grades, revealing groups of high-performing young students versus older, average-performing students.
+Visualization Insights
+Cluster Visualization:
+Use WEKA’s scatter plots to visualize clusters. Look for well-separated clusters indicating good clustering.
+For the iris dataset, visualize sepal and petal dimensions to see distinct clusters for different species.
+For the student dataset, plot age against grades to see how clusters form around different student performance levels.
+Summary
+By using WEKA, you can:
+
+Experiment with different values of k in K-Means clustering and observe the resulting clusters, SSE, and centroids.
+Explore other clustering algorithms and compare their performance.
+Visualize clusters to gain insights into the data.
+Derive actionable insights from the clustering results, such as identifying distinct groups within the data and understanding their characteristics.

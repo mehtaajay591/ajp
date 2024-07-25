@@ -1,0 +1,93 @@
+pip install pandas numpy scikit-learn liac-arff
+
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import arff
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Handle missing values
+    data = data.dropna()
+    # Convert categorical data to numerical data
+    data = pd.get_dummies(data)
+    return data
+
+# Function to train and evaluate regression model
+def train_and_evaluate(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    mae = mean_absolute_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    print(f'Mean Absolute Error: {mae:.2f}')
+    print(f'Mean Squared Error: {mse:.2f}')
+    print(f'R-squared: {r2:.2f}')
+    return model
+
+# Load dataset
+data = load_arff('path/to/dataset.arff')
+
+# Preprocess dataset
+data = preprocess_data(data)
+
+# Train and evaluate model
+target_column_name = 'target_column_name'  # Replace with actual target column name
+model = train_and_evaluate(data, target_column_name)
+
+8. Find the frequent patterns using FP-Growth algorithm on contactlenses.arff
+and test.arff datasets.
+
+pip install pandas mlxtend liac-arff
+import pandas as pd
+import arff
+from mlxtend.frequent_patterns import fpgrowth
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Convert categorical data to a transaction format
+    data = pd.get_dummies(data)
+    return data
+
+# Function to find frequent patterns using FP-Growth
+def find_frequent_patterns(data, min_support=0.5):
+    frequent_itemsets = fpgrowth(data, min_support=min_support, use_colnames=True)
+    return frequent_itemsets
+
+# Load datasets
+contactlenses_data = load_arff('path/to/contactlenses.arff')
+test_data = load_arff('path/to/test.arff')
+
+# Preprocess datasets
+contactlenses_data = preprocess_data(contactlenses_data)
+test_data = preprocess_data(test_data)
+
+# Find frequent patterns
+print("Frequent Patterns in Contact Lenses Data:")
+contactlenses_patterns = find_frequent_patterns(contactlenses_data, min_support=0.5)
+print(contactlenses_patterns)
+
+print("\nFrequent Patterns in Test Data:")
+test_patterns = find_frequent_patterns(test_data, min_support=0.5)
+print(test_patterns)
+

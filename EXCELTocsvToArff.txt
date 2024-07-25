@@ -1,0 +1,31 @@
+1. Create your own EXCEL file. Convert the EXCEL file to .csv format and
+prepare it as .arff file.
+Create an Excel File
+Name,Age,Gender,Salary
+Alice,28,F,70000
+Bob,35,M,80000
+Carol,22,F,65000
+Dave,45,M,90000
+Convert the Excel File to CSV
+Step 3: Prepare the ARFF File using WEKA
+Launch weka on your system.
+In weka, click on "Explorer tab.
+Click on open file button on top menu bar
+Browse to the location where you saved your CSV file and select it.
+weka will automatically load the csv file.
+Once the csv file is loaded in weka, go to the preprocess tab
+click on save( disk icon) and select Arff file from the drop down.
+Choose the location to save your ARFF file and provide a name for the file.
+Click "save" weka will convert your csv file into ARFF format.
+o/p: @relation sample_data
+
+@attribute Name string
+@attribute Age numeric
+@attribute Gender {F, M}
+@attribute Salary numeric
+
+@data
+Alice, 28, F, 70000
+Bob, 35, M, 80000
+Carol, 22, F, 65000
+Dave, 45, M, 90000

@@ -1,0 +1,110 @@
+10. Generate association rules using Apriori algorithm with Bank.arff relation
+a. Set minimum support range as 20% -100% incremental decrease
+factor as 5% and confidence factor as 80% and generate 5 rules.
+b. Set minimum support as 10%, delta 5%, minimum average(4ft) as
+150% and generate 4 rules.
+
+pip install pandas mlxtend liac-arff
+
+import pandas as pd
+import arff
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Convert categorical data to a transaction format
+    data = pd.get_dummies(data)
+    return data
+
+# Load dataset
+bank_data = load_arff('path/to/Bank.arff')
+
+# Preprocess dataset
+bank_data = preprocess_data(bank_data)
+
+# a. Set minimum support range as 20% - 100% with incremental decrease factor as 5% and confidence factor as 80%
+print("Generating association rules with minimum support range 20%-100%, confidence 80%:")
+support_values = [0.20, 0.15, 0.10, 0.05]  # Decremental support values
+confidence_threshold = 0.80
+
+for min_support in support_values:
+    frequent_itemsets = apriori(bank_data, min_support=min_support, use_colnames=True)
+    rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=confidence_threshold)
+    if len(rules) >= 5:
+        rules = rules.head(5)
+        print(f"\nRules with minimum support {min_support*100}% and confidence {confidence_threshold*100}%:")
+        print(rules)
+        break
+
+# b. Set minimum support as 10%, delta 5%, minimum average (4ft) as 150% and generate 4 rules
+print("\nGenerating association rules with minimum support 10%, delta 5%, and minimum average 150%:")
+min_support = 0.10
+delta = 0.05
+min_average = 1.50
+
+frequent_itemsets = apriori(bank_data, min_support=min_support, use_colnames=True)
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=delta)
+rules['lift'] = rules['support'] / (rules['antecedent support'] * rules['consequent support'])
+rules = rules[rules['lift'] >= min_average]
+
+if len(rules) >= 4:
+    rules = rules.head(4)
+    print(f"\nRules with minimum support {min_support*100}%, delta {delta*100}%, and minimum average {min_average*100}%:")
+    print(rules)
+
+11.Generate association rule for the credit card promotion dataset using a
+priory algorithm with the support range 40% to 100% confidence as 10%
+incremental decrease as 5% and generate 6 rules.
+
+pip install pandas mlxtend liac-arff
+import pandas as pd
+import arff
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Function to load arff dataset
+def load_arff(file_path):
+    dataset = arff.load(open(file_path, 'r'))
+    data = pd.DataFrame(dataset['data'])
+    data.columns = [attribute[0] for attribute in dataset['attributes']]
+    return data
+
+# Function to preprocess the dataset
+def preprocess_data(data):
+    # Convert categorical data to a transaction format
+    data = pd.get_dummies(data)
+    return data
+
+# Load dataset
+credit_card_data = load_arff('path/to/credit_card_promotion.arff')
+
+# Preprocess dataset
+credit_card_data = preprocess_data(credit_card_data)
+
+# Set parameters
+confidence_threshold = 0.10
+support_start = 0.40
+support_end = 1.00
+increment = 0.05
+num_rules = 6
+
+print(f"Generating association rules with support range {support_start*100}% to {support_end*100}% with confidence {confidence_threshold*100}% and incremental decrease {increment*100}%:")
+
+support_values = [round(support, 2) for support in list(np.arange(support_start, support_end + increment, increment))]
+
+# Generate rules
+for min_support in support_values:
+    frequent_itemsets = apriori(credit_card_data, min_support=min_support, use_colnames=True)
+    rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=confidence_threshold)
+    if len(rules) >= num_rules:
+        rules = rules.head(num_rules)
+        print(f"\nRules with minimum support {min_support*100}% and confidence {confidence_threshold*100}%:")
+        print(rules)
+        break
+

@@ -1,0 +1,70 @@
+2. Implement Hierarchical Clustering Algorithm to demonstrate the clustering
+rule process in the following datasets;
+a. employee.arff
+b. student.arff
+
+pip install pandas scipy
+pip install liac-arff
+
+import pandas as pd
+import scipy.cluster.hierarchy as sch
+import matplotlib.pyplot as plt
+import arff
+
+# Load the ARFF file and convert it to a DataFrame
+def load_arff(file_path):
+    with open(file_path, 'r') as f:
+        dataset = arff.load(f)
+    df = pd.DataFrame(dataset['data'], columns=[attr[0] for attr in dataset['attributes']])
+    return df
+
+# Load employee and student datasets
+employee_df = load_arff('employee.arff')
+student_df = load_arff('student.arff')
+
+# Select the features for clustering (ignoring non-numeric columns)
+employee_features = employee_df[['Age', 'Salary']]
+student_features = student_df[['Age', 'Grade']]
+
+# Normalize the features if needed (standardization)
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+employee_features_scaled = scaler.fit_transform(employee_features)
+student_features_scaled = scaler.fit_transform(student_features)
+
+# Plot the dendrogram for employee data
+plt.figure(figsize=(10, 7))
+plt.title("Employee Dendrogram")
+dendrogram = sch.dendrogram(sch.linkage(employee_features_scaled, method='ward'))
+plt.xlabel('Employees')
+plt.ylabel('Euclidean distances')
+plt.show()
+
+# Plot the dendrogram for student data
+plt.figure(figsize=(10, 7))
+plt.title("Student Dendrogram")
+dendrogram = sch.dendrogram(sch.linkage(student_features_scaled, method='ward'))
+plt.xlabel('Students')
+plt.ylabel('Euclidean distances')
+plt.show()
+
+# Perform hierarchical clustering and get cluster labels
+from sklearn.cluster import AgglomerativeClustering
+
+# Employee clustering
+hc_employee = AgglomerativeClustering(n_clusters=2, affinity='euclidean', linkage='ward')
+employee_clusters = hc_employee.fit_predict(employee_features_scaled)
+employee_df['Cluster'] = employee_clusters
+
+# Student clustering
+hc_student = AgglomerativeClustering(n_clusters=2, affinity='euclidean', linkage='ward')
+student_clusters = hc_student.fit_predict(student_features_scaled)
+student_df['Cluster'] = student_clusters
+
+# Output the clustered data
+print("Employee Clusters:")
+print(employee_df)
+
+print("\nStudent Clusters:")
+print(student_df)
+

@@ -1,0 +1,85 @@
+start tcp application and monito the packet flow. Make necessary assumption
+
+Assumptions:
+You have a TCP application (e.g., a simple server and client application).
+You have administrative access to your machine.
+You have a network monitoring tool installed (e.g., Wireshark).
+You are familiar with basic networking concepts.
+Steps to Start a TCP Application and Monitor Packet Flow
+1. Create or Use an Existing TCP Application
+For demonstration purposes, let’s use a simple TCP client-server application written in Python.
+
+TCP Server Code:
+
+# tcp_server.py
+import socket
+
+def start_server():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('0.0.0.0', 12345))  # Bind to all interfaces on port 12345
+    server_socket.listen(1)
+    print("Server listening on port 12345")
+    
+    conn, addr = server_socket.accept()
+    print(f"Connected by {addr}")
+    
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        print(f"Received data: {data.decode()}")
+        conn.sendall(data)  # Echo the received data back to the client
+    
+    conn.close()
+
+if __name__ == "__main__":
+    start_server()
+
+# tcp_client.py
+import socket
+
+def start_client():
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('127.0.0.1', 12345))  # Connect to localhost on port 12345
+    
+    client_socket.sendall(b'Hello, server!')
+    data = client_socket.recv(1024)
+    print(f"Received from server: {data.decode()}")
+    
+    client_socket.close()
+
+if __name__ == "__main__":
+    start_client()
+
+Run the TCP Application
+Start the Server:
+
+Open a terminal or command prompt.
+Navigate to the directory containing tcp_server.py.
+Run the server: python tcp_server.py.
+Start the Client:
+
+Open another terminal or command prompt.
+Navigate to the directory containing tcp_client.py.
+Run the client: python tcp_client.py.
+3. Monitor Packet Flow with Wireshark
+Install Wireshark (if not already installed):
+
+Download and install Wireshark from Wireshark's official website.
+Start Wireshark:
+
+Open Wireshark.
+Select the network interface to monitor (e.g., eth0, wlan0, or en0).
+Capture TCP Traffic:
+
+In the filter bar, enter the filter tcp to capture only TCP packets.
+Start capturing by clicking the "Start capturing packets" button.
+Run Your TCP Application:
+
+Ensure your TCP server and client applications are running as described.
+Analyze Packet Flow:
+
+Stop the capture in Wireshark after you have run the client application.
+Review the captured packets:
+Look for packets related to port 12345.
+Analyze the SYN, ACK, and data packets to observe the connection setup and data transfer.
